@@ -1,0 +1,2 @@
+Main-Class: SharedProgram
+Class-Path: scala-library.jar

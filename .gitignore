@@ -1,0 +1,5 @@
+./.idea/
+./SharedProgram/program.jar
+./SharedProgram/scala-library.jar
+./SharedProgram/bin/**/*.*
+./SharedProgram/src/**/*.*
