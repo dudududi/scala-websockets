@@ -1,7 +1,7 @@
-/.idea
-/project
-/SharedProgram/program.jar
-/SharedProgram/scala-library.jar
-/target
+.idea/**
+project/**
+SharedProgram/program.jar
+SharedProgram/scala-library.jar
+target/**
 
 
