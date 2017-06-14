@@ -2,6 +2,7 @@ package server.service
 
 import akka.http.scaladsl.testkit.{ScalatestRouteTest, WSProbe}
 import org.scalatest.{FunSuite, Matchers}
+import server.messages.ScalaProgramContainer
 
 /**
   * Created by sfurman on 11.06.17.
@@ -27,11 +28,12 @@ class ServerServiceTest extends FunSuite with Matchers with ScalatestRouteTest{
   test("should respond with correct message"){
     val serverService = new ServerService()
     val wsClient = WSProbe()
+    val respone = ScalaProgramContainer.programOne
 
     WS("/", wsClient.flow) ~> serverService.websocketRoute ~>
       check {
         wsClient.sendMessage("hello")
-        wsClient.expectMessage("hello")
+        wsClient.expectMessage(respone)
       }
   }
 
