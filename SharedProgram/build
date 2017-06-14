@@ -14,10 +14,10 @@ then
     cp $SCALA_HOME/lib/scala-library.jar .
 fi
 
-scalac -sourcepath src -d bin src/SharedProgram.scala
+scalac -sourcepath src -d bin src/$1.scala
 
 cd bin
-jar -cfm ../program.jar ../MANIFEST.MF *
+jar -cfm ../$1.jar ../MANIFEST.MF *
 cd ..
 
-scala program.jar
+scala $1.jar

@@ -36,6 +36,6 @@ class ServerService() extends Directives {
 
       case TextMessage.Strict(txt) =>
         println(s"Recived unsupported message: $txt")
-        TextMessage(s"Unsupported message")
+        TextMessage(s"unknown_command")
     }
 }
