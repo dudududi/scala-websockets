@@ -22,7 +22,12 @@ class ServerService() extends Directives {
 
   def greeter: Flow[Message, Message, Any] =
     Flow[Message].collect {
-      case TextMessage.Strict("one") ⇒ TextMessage(scalaProgramContainer.programOne)
-      case TextMessage.Strict(txt) => TextMessage("Unsupported message")
+      case TextMessage.Strict("one") ⇒
+        println("Request for program one")
+        TextMessage(scalaProgramContainer.programOne)
+
+      case TextMessage.Strict(txt) =>
+        println(s"Recived unsupported message: $txt")
+        TextMessage(s"Unsupported message")
     }
 }
