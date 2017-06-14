@@ -1,27 +1,36 @@
 import java.io.PrintWriter
-import sys.process._
+
+import client.Client
+
+import scala.sys.process._
 
 object Main {
   def main(args: Array[String]) {
 
     val properlyFileResult: Int = 100
-    prepareSharedProgram()
-    buildJarFile(properlyFileResult)
-    runJarFile()
+    val sourceCode: String = downloadSharedProgramFromServer()
+
+//    prepareSharedProgram(sourceCode)
+//    buildJarFile(properlyFileResult)
+//    runJarFile()
 
   }
 
-  def prepareSharedProgram(): Unit = {
-    val sourceCode: String = downloadSharedProgramFromServer()
+  def prepareSharedProgram(sourceCode:String): Unit = {
     val destinationPath: String = "./SharedProgram/src/SharedProgram.scala"
 
     saveDownloadedSourceCodeToFile(destinationPath, sourceCode)
   }
 
-  def saveDownloadedSourceCodeToFile(destinationPath: String, sourceCode: String): Unit = {
-    val printer = new PrintWriter(destinationPath)
-    printer.write(sourceCode)
-    printer.close()
+  def saveDownloadedSourceCodeToFile(destinationPath: String, sourceCode: String): Boolean = {
+      if(sourceCode != "") {
+        val printer = new PrintWriter(destinationPath)
+        printer.write(sourceCode)
+        printer.close()
+        true
+      } else {
+         false
+      }
   }
 
   def buildJarFile(properlyFileResult: Int): Unit = {
@@ -41,6 +50,9 @@ object Main {
   }
 
   def downloadSharedProgramFromServer(): String ={
+    Client.createConnection()
+    Client.sendMessage("test2")
+
     //TODO to implement - websocket connection
     new String("object SharedProgram { \n def main(args: Array[String]) { \n val okResponseCode = 100 \n println(okResponseCode) \n} \n}\n")
   }
