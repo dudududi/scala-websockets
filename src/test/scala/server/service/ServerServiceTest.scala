@@ -9,6 +9,8 @@ import server.messages.ScalaProgramContainer
   */
 class ServerServiceTest extends FunSuite with Matchers with ScalatestRouteTest{
 
+  val UNSUPPORTED_MSG = "Unsupported message"
+
   test("should create empty server"){
     new ServerService()
   }
@@ -25,15 +27,27 @@ class ServerServiceTest extends FunSuite with Matchers with ScalatestRouteTest{
       }
   }
 
-  test("should respond with correct message"){
+  test("should respond with program one"){
     val serverService = new ServerService()
     val wsClient = WSProbe()
     val respone = ScalaProgramContainer.programOne
 
     WS("/", wsClient.flow) ~> serverService.websocketRoute ~>
       check {
-        wsClient.sendMessage("hello")
+        wsClient.sendMessage("one")
         wsClient.expectMessage(respone)
+      }
+  }
+
+  test("should respond with unsupported msg"){
+    val serverService = new ServerService()
+    val wsClient = WSProbe()
+    val respone = ScalaProgramContainer.programOne
+
+    WS("/", wsClient.flow) ~> serverService.websocketRoute ~>
+      check {
+        wsClient.sendMessage("different msg")
+        wsClient.expectMessage(UNSUPPORTED_MSG)
       }
   }
 
