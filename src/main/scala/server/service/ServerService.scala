@@ -26,9 +26,9 @@ class ServerService() extends Directives {
         println("Request for program one")
         TextMessage(scalaProgramContainer.programOne)
 
-      case TextMessage.Strict("helloWord") =>
+      case TextMessage.Strict("helloWorld") =>
         println("Request for program hello word")
-        TextMessage(scalaProgramContainer.helloWord)
+        TextMessage(scalaProgramContainer.helloWorld)
 
       case TextMessage.Strict("sum") =>
         println("Request for program sum")

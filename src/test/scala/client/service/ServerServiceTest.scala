@@ -1,8 +1,8 @@
-package server.service
+package client.service
 
 import akka.http.scaladsl.testkit.{ScalatestRouteTest, WSProbe}
 import org.scalatest.{FunSuite, Matchers}
-import server.messages.ScalaProgramContainer
+import client.messages.ScalaProgramContainer
 
 /**
   * Created by sfurman on 11.06.17.
@@ -12,12 +12,12 @@ class ServerServiceTest extends FunSuite with Matchers with ScalatestRouteTest{
   val UNSUPPORTED_MSG = "Unsupported message"
 
   test("should create empty server"){
-    new ServerService()
+    new ClientService()
   }
 
   test("should be able to connect to the Server"){
     val wsClient = WSProbe()
-    val serverService = new ServerService()
+    val serverService = new ClientService()
 
     // WS creates a WebSocket request for testing
     WS("/", wsClient.flow) ~> serverService.websocketRoute ~>
@@ -28,7 +28,7 @@ class ServerServiceTest extends FunSuite with Matchers with ScalatestRouteTest{
   }
 
   test("should respond with program one"){
-    val serverService = new ServerService()
+    val serverService = new ClientService()
     val wsClient = WSProbe()
     val respone = ScalaProgramContainer.programOne
 
@@ -40,7 +40,7 @@ class ServerServiceTest extends FunSuite with Matchers with ScalatestRouteTest{
   }
 
   test("should respond with program hello word"){
-    val serverService = new ServerService()
+    val serverService = new ClientService()
     val wsClient = WSProbe()
     val respone = ScalaProgramContainer.helloWord
 
@@ -52,7 +52,7 @@ class ServerServiceTest extends FunSuite with Matchers with ScalatestRouteTest{
   }
 
   test("should respond with program sum"){
-    val serverService = new ServerService()
+    val serverService = new ClientService()
     val wsClient = WSProbe()
     val respone = ScalaProgramContainer.sum
 
@@ -64,7 +64,7 @@ class ServerServiceTest extends FunSuite with Matchers with ScalatestRouteTest{
   }
 
   test("should respond with unsupported msg"){
-    val serverService = new ServerService()
+    val serverService = new ClientService()
     val wsClient = WSProbe()
     val respone = ScalaProgramContainer.programOne
 

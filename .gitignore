@@ -2,6 +2,8 @@
 project
 SharedProgram/program.jar
 SharedProgram/scala-library.jar
+SharedProgram/bin/**
+!SharedProgram/bin/.gitkeep
 target
-
-
+websockets.iml
+App_Data/Programs/**
