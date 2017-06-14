@@ -39,6 +39,30 @@ class ServerServiceTest extends FunSuite with Matchers with ScalatestRouteTest{
       }
   }
 
+  test("should respond with program hello word"){
+    val serverService = new ServerService()
+    val wsClient = WSProbe()
+    val respone = ScalaProgramContainer.helloWord
+
+    WS("/", wsClient.flow) ~> serverService.websocketRoute ~>
+      check {
+        wsClient.sendMessage("helloWord")
+        wsClient.expectMessage(respone)
+      }
+  }
+
+  test("should respond with program sum"){
+    val serverService = new ServerService()
+    val wsClient = WSProbe()
+    val respone = ScalaProgramContainer.sum
+
+    WS("/", wsClient.flow) ~> serverService.websocketRoute ~>
+      check {
+        wsClient.sendMessage("sum")
+        wsClient.expectMessage(respone)
+      }
+  }
+
   test("should respond with unsupported msg"){
     val serverService = new ServerService()
     val wsClient = WSProbe()

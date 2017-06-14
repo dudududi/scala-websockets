@@ -26,6 +26,14 @@ class ServerService() extends Directives {
         println("Request for program one")
         TextMessage(scalaProgramContainer.programOne)
 
+      case TextMessage.Strict("helloWord") =>
+        println("Request for program hello word")
+        TextMessage(scalaProgramContainer.helloWord)
+
+      case TextMessage.Strict("sum") =>
+        println("Request for program sum")
+        TextMessage(scalaProgramContainer.sum)
+
       case TextMessage.Strict(txt) =>
         println(s"Recived unsupported message: $txt")
         TextMessage(s"Unsupported message")
