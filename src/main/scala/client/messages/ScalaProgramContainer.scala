@@ -1,4 +1,4 @@
-package server.messages
+package client.messages
 
 /**
   * Created by sfurman on 14.06.17.

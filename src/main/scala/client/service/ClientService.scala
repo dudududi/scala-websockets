@@ -1,16 +1,16 @@
-package server.service
+package client.service
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.ws.{Message, TextMessage}
 import akka.http.scaladsl.server.Directives
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.Flow
-import server.messages.ScalaProgramContainer
+import client.messages.ScalaProgramContainer
 
 /**
   * Created by sfurman on 10.06.17.
   */
-class ServerService() extends Directives {
+class ClientService() extends Directives {
 
   implicit val actorSystem = ActorSystem()
   implicit val actorMaterializer = ActorMaterializer()

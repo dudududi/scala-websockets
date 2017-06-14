@@ -1,8 +1,8 @@
-import client.Client
+import server.Server
 
 object Main {
   def main(args: Array[String]) {
-      val firstProgramClient = new Client()
+      val firstProgramClient = new Server()
       firstProgramClient.createProgramReceiver("one")
 
 //      val secondProgramClient = new Client()
