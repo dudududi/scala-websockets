@@ -1,0 +1,23 @@
+#!/bin/bash
+
+export SCALA_HOME=/usr/share/scala/
+export PATH=$PATH:$SCALA_HOME
+
+if [ ! $SCALA_HOME ]
+then
+    echo ERROR: set a SCALA_HOME environment variable
+    exit
+fi
+
+if [ ! -f scala-library.jar ]
+then
+    cp $SCALA_HOME/lib/scala-library.jar .
+fi
+
+scalac -sourcepath src -d bin src/$1.scala
+
+cd bin
+jar -cfm ../$1.jar ../MANIFEST.MF *
+cd ..
+
+scala $1.jar

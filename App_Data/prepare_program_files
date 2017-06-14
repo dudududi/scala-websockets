@@ -1,0 +1,23 @@
+#!/bin/bash
+
+rm -rf ./Programs/$1
+
+mkdir ./Programs/$1
+mkdir ./Programs/$1/bin
+mkdir ./Programs/$1/src
+touch ./Programs/$1/MANIFEST.MF
+
+echo -n "Main-Class: $1
+Class-Path: scala-library.jar" >./Programs/$1/MANIFEST.MF
+
+echo "object $1 {
+        def main(args: Array[String]) {
+            val okResponseCode = 100
+            println(okResponseCode)
+         }
+       }" >./Programs/$1/src/$1.scala
+
+cp ./Sources/build ./Programs/$1/build
+
+cd ./Programs/$1/
+bash ./build $1
