@@ -17,7 +17,7 @@ class ServerServiceTest extends FunSuite with Matchers with ScalatestRouteTest{
     val serverService = new ServerService()
 
     // WS creates a WebSocket request for testing
-    WS("/greeter", wsClient.flow) ~> serverService.websocketRoute ~>
+    WS("/", wsClient.flow) ~> serverService.websocketRoute ~>
       check {
         // check response for WS Upgrade headers
         isWebSocketUpgrade shouldEqual true
@@ -28,7 +28,7 @@ class ServerServiceTest extends FunSuite with Matchers with ScalatestRouteTest{
     val serverService = new ServerService()
     val wsClient = WSProbe()
 
-    WS("/greeter", wsClient.flow) ~> serverService.websocketRoute ~>
+    WS("/", wsClient.flow) ~> serverService.websocketRoute ~>
       check {
         wsClient.sendMessage("hello")
         wsClient.expectMessage("hello")
@@ -36,5 +36,3 @@ class ServerServiceTest extends FunSuite with Matchers with ScalatestRouteTest{
   }
 
 }
-
-
