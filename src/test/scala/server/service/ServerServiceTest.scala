@@ -1,4 +1,4 @@
-package server
+package server.service
 
 import akka.http.scaladsl.testkit.{ScalatestRouteTest, WSProbe}
 import org.scalatest.{FunSuite, Matchers}
@@ -6,7 +6,7 @@ import org.scalatest.{FunSuite, Matchers}
 /**
   * Created by sfurman on 11.06.17.
   */
-class ServerTest extends FunSuite with Matchers with ScalatestRouteTest{
+class ServerServiceTest extends FunSuite with Matchers with ScalatestRouteTest{
 
   test("should create empty server"){
     new ServerService()

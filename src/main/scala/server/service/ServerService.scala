@@ -1,13 +1,10 @@
-package server
+package server.service
 
 import akka.actor.ActorSystem
-import akka.http.scaladsl.Http
-import akka.stream.ActorMaterializer
 import akka.http.scaladsl.model.ws.{Message, TextMessage}
 import akka.http.scaladsl.server.Directives
+import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.Flow
-
-import scala.io.StdIn
 
 /**
   * Created by sfurman on 10.06.17.
