@@ -30,7 +30,8 @@ object ServerService {
   }
 
   private def compile(code: String): TextMessage = {
-    val name = s"clientProgram-${System.currentTimeMillis()}"
+    //val name = s"clientProgram-${System.currentTimeMillis()}"
+    val name = "program"
     println(s"Compiling received program, name: $name")
 
     ProgramController.setOutputJarName(name)
