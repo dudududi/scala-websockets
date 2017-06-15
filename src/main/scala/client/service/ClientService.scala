@@ -1,41 +1,39 @@
 package client.service
 
-import akka.actor.ActorSystem
-import akka.http.scaladsl.model.ws.{Message, TextMessage}
-import akka.http.scaladsl.server.Directives
-import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.Flow
-import client.messages.ScalaProgramContainer
+import java.net.URI
 
-/**
-  * Created by sfurman on 10.06.17.
-  */
-class ClientService() extends Directives {
+import akka.actor.{Actor, ActorSystem, Props}
+import org.java_websocket.client.WebSocketClient
+import org.java_websocket.drafts.Draft_17
+import org.java_websocket.handshake.ServerHandshake
 
-  implicit val actorSystem = ActorSystem()
-  implicit val actorMaterializer = ActorMaterializer()
-  val scalaProgramContainer = ScalaProgramContainer
 
-  val websocketRoute = get {
-    handleWebSocketMessages(greeter)
+object ClientService {
+  def apply(url: String)(implicit actorSystem: ActorSystem): ClientService = new ClientService(url, actorSystem)
+}
+
+class ClientService(url: String, actorSystem: ActorSystem) extends WebSocketClient(new URI(url), new Draft_17()) {
+
+  override def onOpen(handshakeData: ServerHandshake): Unit = println("Web socket opened!")
+
+  override def onMessage(message: String): Unit = println(message)
+
+  override def onClose(code: Int, reason: String, remote: Boolean): Unit = println("Web socket closed")
+
+  override def onError(ex: Exception): Unit = println(s"ERROR!! $ex")
+
+  def sendRemoteExecuteRequest(message: String): Unit = {
+    val talkActor = actorSystem.actorOf(props)
+
+    println(s"Sending message: $message to server...")
+    talkActor ! message
   }
 
-  def greeter: Flow[Message, Message, Any] =
-    Flow[Message].collect {
-      case TextMessage.Strict("one") ⇒
-        println("Request for program one")
-        TextMessage(scalaProgramContainer.programOne)
-
-      case TextMessage.Strict("helloWord") =>
-        println("Request for program hello word")
-        TextMessage(scalaProgramContainer.helloWord)
-
-      case TextMessage.Strict("sum") =>
-        println("Request for program sum")
-        TextMessage(scalaProgramContainer.sum)
-
-      case TextMessage.Strict(txt) =>
-        println(s"Recived unsupported message: $txt")
-        TextMessage(s"unknown_command")
+  private val props = Props(new Actor {
+    override def receive: Receive = {
+      case msg: String =>
+        println(s"Received message: $msg")
     }
+  })
+
 }

@@ -1,57 +1,33 @@
 package server
 
-import akka.Done
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model.StatusCodes
-import akka.http.scaladsl.model.ws.{Message, TextMessage, WebSocketRequest}
 import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.{Keep, Sink, Source}
-import com.typesafe.config.ConfigFactory
 import engine.ProgramController
 
-import scala.concurrent.Future
+import scala.io.StdIn
 
-class Server {
 
-  private val config = ConfigFactory.defaultApplication()
-  private val serverAdress = config.getString("server.fullAddr")
-  implicit val system = ActorSystem()
-  implicit val materializer = ActorMaterializer()
-  import system.dispatcher
 
-  def createProgramReceiver(requestCommandMessage: String): Unit = {
-    val webSocketFlow = Http().webSocketClientFlow(WebSocketRequest(s"ws://$serverAdress"))
-    val incoming: Sink[Message, Future[Done]] =
-      Sink.foreach[Message] {
-        case message: TextMessage.Strict =>
-          println(message.text)
-          handleProgramResponse(message.text, requestCommandMessage)
-      }
+object Server extends App{
 
-    val outgoing = Source.single(TextMessage(requestCommandMessage))
+  implicit val actorSystem = ActorSystem()
+  implicit val flowMaterializer = ActorMaterializer()
+  implicit val executionContext = actorSystem.dispatcher
 
-    val (upgradeResponse, closed) =
-      outgoing
-        .viaMat(webSocketFlow)(Keep.right)
-        .toMat(incoming)(Keep.both)
-        .run()
+  private val config = actorSystem.settings.config
+  private val serverHost = config.getString("server.host")
+  private val serverPort = config.getInt("server.port")
 
-    val connected = upgradeResponse.flatMap { upgrade =>
-      if (upgrade.response.status == StatusCodes.SwitchingProtocols) {
-        Future.successful(Done)
-      } else {
-        throw new RuntimeException(s"Connection failed: ${upgrade.response.status}")
-      }
-    }
+  private val route = ServerService.route
 
-    connected.onComplete(println)
-  }
+  val binding = Http().bindAndHandle(route, serverHost, serverPort)
 
-  def handleProgramResponse (sourceCodeString: String, programName: String): Unit = {
-    val properlyFileResult: Int = 100
-    ProgramController.setOutputJarName(programName)
-    ProgramController.prepareSharedProgram(sourceCodeString)
-    //ProgramController.runJarFile(programName)
-  }
+  println (s"Server is running at http://$serverHost:$serverPort ...")
+
+  StdIn.readLine()
+
+  binding.flatMap(_.unbind()).onComplete(_ => actorSystem.terminate())
+  println("Server is down.")
+
 }
