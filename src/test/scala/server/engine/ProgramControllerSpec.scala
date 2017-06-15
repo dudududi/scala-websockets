@@ -1,4 +1,5 @@
 package server.engine
+
 import scala.sys.process._
 import org.scalatest.FlatSpec
 
@@ -41,9 +42,16 @@ class ProgramControllerSpec extends FlatSpec {
   }
 
   "Building jar" should "return false if file or directory with name = programName not exist" in {
-    val programName = "test"
+    val programName = "xxx"
 
     val result = ProgramController.buildJarFile(programName)
     assert(!result)
+  }
+
+  "Prepare difference raport" should "return '' if programName not exist or no differences" in {
+    val programName = "test"
+
+    val result = ProgramController.makeDiffFromLatestFiles(programName)
+    assert(result.equals(""))
   }
 }
