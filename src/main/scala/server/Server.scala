@@ -12,7 +12,6 @@ object Server extends App{
 
   implicit val actorSystem = ActorSystem()
   implicit val flowMaterializer = ActorMaterializer()
-  implicit val executionContext = actorSystem.dispatcher
 
   private val config = actorSystem.settings.config
   private val serverHost = config.getString("server.host")
@@ -22,9 +21,11 @@ object Server extends App{
 
   val binding = Http().bindAndHandle(route, serverHost, serverPort)
 
-  println (s"Server is running at http://$serverHost:$serverPort ...")
+  println (s"Server is running at ws://$serverHost:$serverPort ...")
 
   StdIn.readLine()
+
+  import actorSystem.dispatcher
 
   binding.flatMap(_.unbind()).onComplete(_ => actorSystem.terminate())
   println("Server is down.")

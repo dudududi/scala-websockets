@@ -6,7 +6,7 @@ import client.service.ClientService
 object ClientApp extends App{
   implicit val actorSystem = ActorSystem()
 
-  val client = ClientService("http://localhost:9797/abc")
+  val client = ClientService("ws://localhost:9797/echo")
 
   if (client.connectBlocking()){
     client.sendRemoteExecuteRequest("requeeest")
