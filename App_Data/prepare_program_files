@@ -1,0 +1,15 @@
+#!/bin/bash
+
+rm -rf ./Programs/$1/bin
+rm -rf ./Programs/$1/MANIFEST.MF
+
+mkdir ./Programs/$1/bin
+touch ./Programs/$1/MANIFEST.MF
+
+echo -n "Main-Class: $1
+Class-Path: scala-library.jar" >./Programs/$1/MANIFEST.MF
+
+cp ./Sources/build ./Programs/$1/build
+
+cd ./Programs/$1/
+bash ./build $1
