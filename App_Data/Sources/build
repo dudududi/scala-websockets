@@ -21,3 +21,7 @@ jar -cfm ../$1.jar ../MANIFEST.MF *
 cd ..
 
 scala $1.jar
+
+now=$(date +"%s%N")
+mkdir -p ../../history/$1
+cp ./src/$1.scala ../../history/$1/$now

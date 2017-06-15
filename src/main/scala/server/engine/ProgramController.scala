@@ -1,5 +1,4 @@
 package server.engine
-
 import java.io.PrintWriter
 import scala.sys.process._
 
@@ -54,5 +53,12 @@ object ProgramController {
     val consoleResult = ("scala ./App_Data/Programs/" + jarName + "/" + jarName + ".jar").!!
     println("Jar program output: " + consoleResult.replace("\n", ""))
     consoleResult.replace("\n", "")
+  }
+
+  def makeDiffFromLatestFiles(programName: String): String ={
+    val consoleResult = Process(Seq("bash", "-c", "cd ./App_Data/ && bash ./prepare_difference_report " + programName)).!!
+
+    println(consoleResult)
+    consoleResult
   }
 }

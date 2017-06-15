@@ -1,0 +1,8 @@
+#!/bin/bash
+
+files=$(find ./history/test/ -maxdepth 1 -type f -printf "%p\n" | sort -n | tail -n 2)
+
+diff $files > diff
+cat diff
+
+rm -rf diff
