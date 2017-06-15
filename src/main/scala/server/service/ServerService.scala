@@ -9,7 +9,7 @@ import server.engine.ProgramController
 
 object ServerService {
   def route: Route = path(Protocol.CONNECT_PATH) {
-    println ("New client connected!")
+    println("New client connected!")
     get {
       handleWebSocketMessages(connectService)
     }
@@ -24,7 +24,7 @@ object ServerService {
     msg match {
       case s if s.startsWith(Protocol.COMPILE_REQUEST) => compile(s.stripPrefix(Protocol.COMPILE_REQUEST))
       case s if s.startsWith(Protocol.EXECUTE_REQUEST) => execute(s.stripPrefix(Protocol.EXECUTE_REQUEST))
-      case Protocol.REPORT_REQUEST => report()
+      case s if s.startsWith(Protocol.REPORT_REQUEST) => report(s.stripPrefix(Protocol.REPORT_REQUEST))
       case _ => TextMessage("Error! Unsupported command")
     }
   }
@@ -45,9 +45,9 @@ object ServerService {
     TextMessage(s"${Protocol.EXECUTE_RESULT}$result")
   }
 
-  private def report(): TextMessage = {
+  private def report(name: String): TextMessage = {
     println("Creating diff report")
-    val result = ProgramController.makeDiffFromLatestFiles()
+    val result = ProgramController.makeDiffFromLatestFiles(name)
     TextMessage(s"${Protocol.REPORT_RESULT}$result")
   }
 

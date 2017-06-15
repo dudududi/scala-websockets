@@ -49,7 +49,12 @@ class ProgramControllerSpec extends FlatSpec {
   }
 
   "Prepare difference raport" should "return '' if programName not exist or no differences" in {
-    val result = ProgramController.makeDiffFromLatestFiles()
+    val programName = "test"
+
+    val result = ProgramController.makeDiffFromLatestFiles(programName)
+
     assert(result.equals(""))
+
+    "rm -rf ./App_Data/history".!
   }
 }
