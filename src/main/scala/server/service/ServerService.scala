@@ -33,8 +33,8 @@ object ServerService {
     val name = s"clientProgram-${System.currentTimeMillis()}"
     println(s"Compiling received program, name: $name")
 
-    ProgramController.prepareSharedProgram(code)
-    val result = ProgramController.buildJarFile(name)
+    ProgramController.setOutputJarName(name)
+    val result = ProgramController.prepareSharedProgram(code)
     TextMessage(if (result) s"${Protocol.COMPILE_RESULT_SUCCESS}$name" else Protocol.COMPILE_RESULT_FAIL)
   }
 

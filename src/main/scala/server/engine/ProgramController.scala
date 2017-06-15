@@ -18,7 +18,6 @@ object ProgramController {
     if (consoleResult == 0) {
       val destinationPath: String = "./App_Data/Programs/" + programOutputName + "/src/" + programOutputName + ".scala"
       saveDownloadedSourceCodeToFile(destinationPath, sourceCode)
-      true
     } else {
       false
     }
@@ -30,7 +29,6 @@ object ProgramController {
       printer.write(sourceCode)
       printer.close()
       buildJarFile(programOutputName)
-      true
     } else {
       false
     }
