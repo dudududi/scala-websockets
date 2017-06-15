@@ -55,10 +55,10 @@ object ProgramController {
     consoleResult.replace("\n", "")
   }
 
-  def makeDiffFromLatestFiles(programName: String): String ={
-    val consoleResult = Process(Seq("bash", "-c", "cd ./App_Data/ && bash ./prepare_difference_report " + programName)).!!
+  def makeDiffFromLatestFiles(): String ={
+    val consoleResult = Process(Seq("bash", "-c", "cd ./App_Data/ && bash ./prepare_difference_report")).!!
 
-    println(consoleResult)
+    println(s"Report: $consoleResult")
     consoleResult
   }
 }
