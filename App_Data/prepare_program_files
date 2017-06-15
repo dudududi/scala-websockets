@@ -7,7 +7,8 @@ mkdir ./Programs/$1/bin
 touch ./Programs/$1/MANIFEST.MF
 
 echo -n "Main-Class: $1
-Class-Path: scala-library.jar" >./Programs/$1/MANIFEST.MF
+Class-Path: scala-library.jar
+" >./Programs/$1/MANIFEST.MF
 
 cp ./Sources/build ./Programs/$1/build
 

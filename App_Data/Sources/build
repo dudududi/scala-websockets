@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SCALA_HOME=/usr/share/scala/
+export SCALA_HOME=/usr/share/scala/:/usr/local/opt/scala/idea
 export PATH=$PATH:$SCALA_HOME
 
 if [ ! $SCALA_HOME ]
@@ -8,6 +8,10 @@ then
     echo ERROR: set a SCALA_HOME environment variable
     exit
 fi
+
+command -v scalac >/dev/null 2>&1 || { echo >&2 "ERROR: 'scalac' not found"; exit 1; }
+command -v scala >/dev/null 2>&1 || { echo >&2 "ERROR: 'scala' not found"; exit 1; }
+
 
 if [ ! -f scala-library.jar ]
 then
@@ -20,7 +24,7 @@ cd bin
 jar -cfm ../$1.jar ../MANIFEST.MF *
 cd ..
 
-scala $1.jar
+scala -cp . $1.jar
 
 now=$(date +"%s%N")
 mkdir -p ../../history/$1
