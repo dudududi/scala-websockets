@@ -1,4 +1,4 @@
-package client.service
+/*package client.service
 
 import akka.http.scaladsl.testkit.{ScalatestRouteTest, WSProbe}
 import org.scalatest.{FunSuite, Matchers}
@@ -75,4 +75,4 @@ class ServerServiceTest extends FunSuite with Matchers with ScalatestRouteTest{
       }
   }
 
-}
+}*/
