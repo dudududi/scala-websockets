@@ -7,7 +7,7 @@ import akka.stream.scaladsl.Flow
 import common.Protocol
 import server.engine.ProgramController
 
-object ServerService {
+class ServerService(programController: ProgramController) {
   def route: Route = path(Protocol.CONNECT_PATH) {
     println ("New client connected!")
     get {
@@ -29,25 +29,26 @@ object ServerService {
     }
   }
 
-  private def compile(code: String): TextMessage = {
-    //val name = s"clientProgram-${System.currentTimeMillis()}"
-    val name = "program"
+  private def compile(msg: String): TextMessage = {
+    val name = msg.split(":").head
+    val code = msg.stripPrefix(s"$name:")
+
     println(s"Compiling received program, name: $name")
 
-    ProgramController.setOutputJarName(name)
-    val result = ProgramController.prepareSharedProgram(code)
+    programController.setOutputJarName(name)
+    val result = programController.prepareSharedProgram(code)
     TextMessage(if (result) s"${Protocol.COMPILE_RESULT_SUCCESS}$name" else Protocol.COMPILE_RESULT_FAIL)
   }
 
   private def execute(name: String): TextMessage = {
     println(s"Executing program with name: $name")
-    val result = ProgramController.runJarFile(name)
+    val result = programController.runJarFile(name)
     TextMessage(s"${Protocol.EXECUTE_RESULT}$result")
   }
 
   private def report(): TextMessage = {
     println("Creating diff report")
-    val result = ProgramController.makeDiffFromLatestFiles()
+    val result = programController.makeDiffFromLatestFiles()
     TextMessage(s"${Protocol.REPORT_RESULT}$result")
   }
 

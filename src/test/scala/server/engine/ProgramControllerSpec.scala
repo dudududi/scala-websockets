@@ -1,12 +1,18 @@
 package server.engine
 
 import scala.sys.process._
-import org.scalatest.FlatSpec
+import org.scalatest.{BeforeAndAfter, FlatSpec}
 
-class ProgramControllerSpec extends FlatSpec {
+class ProgramControllerSpec extends FlatSpec with BeforeAndAfter{
+  var programController: ProgramController = _
+
+  before {
+    programController = new ProgramController
+  }
+
   "Setting shared program name" should "return set program name" in {
     val programName = "test"
-    val result = ProgramController.setOutputJarName(programName)
+    val result = programController.setOutputJarName(programName)
     assert(result == programName)
   }
 
@@ -18,7 +24,7 @@ class ProgramControllerSpec extends FlatSpec {
       "} \n" +
       "}"
 
-    val result = ProgramController.prepareSharedProgram(sourceCode)
+    val result = programController.prepareSharedProgram(sourceCode)
     assert(result)
   }
 
@@ -26,7 +32,7 @@ class ProgramControllerSpec extends FlatSpec {
     val jarFileName = "test"
     val knownResult = "100"
 
-    val result = ProgramController.runJarFile(jarFileName)
+    val result = programController.runJarFile(jarFileName)
     assert(result.equals(knownResult))
     "rm -rf ./App_Data/Programs/test".!
   }
@@ -34,9 +40,9 @@ class ProgramControllerSpec extends FlatSpec {
   "Saving downloaded source code" should "return false if sourceCode string is empty or equals 'unknown_command'" in {
     val destinationPath = "./App_Data/Programs/"
     var sourceCodeString = ""
-    val resultWhileEmptyString = ProgramController.saveDownloadedSourceCodeToFile(destinationPath, sourceCodeString)
+    val resultWhileEmptyString = programController.saveDownloadedSourceCodeToFile(destinationPath, sourceCodeString)
     sourceCodeString = "unknown_command"
-    val resultWhileUnknownCommand = ProgramController.saveDownloadedSourceCodeToFile(destinationPath, sourceCodeString)
+    val resultWhileUnknownCommand = programController.saveDownloadedSourceCodeToFile(destinationPath, sourceCodeString)
 
     assert(!resultWhileEmptyString && !resultWhileUnknownCommand)
   }
@@ -44,12 +50,12 @@ class ProgramControllerSpec extends FlatSpec {
   "Building jar" should "return false if file or directory with name = programName not exist" in {
     val programName = "xxx"
 
-    val result = ProgramController.buildJarFile(programName)
+    val result = programController.buildJarFile(programName)
     assert(!result)
   }
 
   "Prepare difference raport" should "return '' if programName not exist or no differences" in {
-    val result = ProgramController.makeDiffFromLatestFiles()
+    val result = programController.makeDiffFromLatestFiles()
     assert(result.equals(""))
   }
 }

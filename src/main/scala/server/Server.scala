@@ -3,6 +3,7 @@ package server
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
+import server.engine.ProgramController
 import server.service.ServerService
 
 import scala.io.StdIn
@@ -18,7 +19,7 @@ object Server extends App{
   private val serverHost = config.getString("server.host")
   private val serverPort = config.getInt("server.port")
 
-  private val route = ServerService.route
+  private val route = new ServerService(new ProgramController).route
 
   val binding = Http().bindAndHandle(route, serverHost, serverPort)
 

@@ -12,7 +12,7 @@ object ClientApp extends App with ResultHandler{
   val client = ClientService(s"$url/${Protocol.CONNECT_PATH}", this)
 
   if (client.connectBlocking()){
-    client.sendRequest(ScalaProgramContainer.helloWord)
+    client.sendRequest(ScalaProgramContainer.helloWord._1, ScalaProgramContainer.helloWord._2)
   }
 
   override def onCompile(result: Boolean): Unit = {
@@ -24,6 +24,6 @@ object ClientApp extends App with ResultHandler{
   }
 
   override def onReport(report: String): Unit = {
-
+    println (s"Report: $report")
   }
 }

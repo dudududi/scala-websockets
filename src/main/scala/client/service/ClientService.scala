@@ -39,9 +39,9 @@ class ClientService(url: String, handler: ResultHandler) extends WebSocketClient
       }
   }
 
-  def sendRequest(code: String): Unit = {
+  def sendRequest(name: String, code: String): Unit = {
     println("Send compile request to server...")
-    send(s"${Protocol.COMPILE_REQUEST}$code")
+    send(s"${Protocol.COMPILE_REQUEST}$name:$code")
   }
 
   private def sendExecuteRequest(programName: String): Unit = {
