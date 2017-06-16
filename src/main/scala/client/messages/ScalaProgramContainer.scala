@@ -12,7 +12,7 @@ object ScalaProgramContainer {
             val okResponseCode = 100
             println(okResponseCode)
           }
-      }""".stripMargin)
+      }""")
   }
 
   def helloWord(): (String, String) = {
