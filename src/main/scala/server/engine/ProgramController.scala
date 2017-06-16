@@ -36,10 +36,10 @@ class ProgramController {
   }
 
   def buildJarFile(programName: String): Boolean = {
-    val consoleResult = Process(Seq("bash", "-c", "cd ./App_Data/ && bash ./prepare_program_files " + programName)).!
+    val consoleResult = Process(Seq("bash", "-c", "cd ./App_Data/ && bash ./prepare_program_files " + programName)).!!
     println("Compilation output: " + consoleResult)
 
-    if (consoleResult == 0) {
+    if (consoleResult != "") {
       println("Program compiled successfully!")
       true
     } else {
