@@ -13,7 +13,7 @@ object Protocol {
   val EXECUTE_REQUEST = "execute_request:"
   val EXECUTE_RESULT = "execute_result:"
 
-  val REPORT_REQUEST = "report_request"
+  val REPORT_REQUEST = "report_request:"
   val REPORT_RESULT = "report_result:"
 
 }

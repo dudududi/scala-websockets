@@ -31,7 +31,7 @@ class ServerServiceTest extends FlatSpec with BeforeAndAfter with MockitoSugar {
   }
 
   "Calling report request" should "call the report method properly" in {
-    serverService.handleRequest("report_request")
+    serverService.handleRequest("report_request:abc")
 
     verify(programController).makeDiffFromLatestFiles()
   }

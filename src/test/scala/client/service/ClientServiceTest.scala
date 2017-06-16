@@ -36,15 +36,15 @@ class ClientServiceTest extends FlatSpec with MockitoSugar with BeforeAndAfter {
   }
 
   "Calling onMessage with execute result" should "call the report request properly" in {
-    clientService.onMessage("execute_result:abc")
+    clientService.onMessage("execute_result:abc:result")
 
-    verify(clientService).send("report_request")
-    verify(handler).onExecute("abc")
+    verify(clientService).send("report_request:abc")
+    verify(handler).onExecute("result")
   }
 
   "Calling onMessage with report result" should "fall back to handler properly" in {
-    clientService.onMessage("report_result:abc")
+    clientService.onMessage("report_result:abc:report")
 
-    verify(handler).onReport("abc")
+    verify(handler).onReport("report")
   }
 }

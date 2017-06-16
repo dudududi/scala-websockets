@@ -24,7 +24,7 @@ class ServerService(programController: ProgramController) {
     msg match {
       case s if s.startsWith(Protocol.COMPILE_REQUEST) => compile(s.stripPrefix(Protocol.COMPILE_REQUEST))
       case s if s.startsWith(Protocol.EXECUTE_REQUEST) => execute(s.stripPrefix(Protocol.EXECUTE_REQUEST))
-      case Protocol.REPORT_REQUEST => report()
+      case s if s.startsWith(Protocol.REPORT_REQUEST) => report(s.stripPrefix(Protocol.REPORT_REQUEST))
       case _ => TextMessage("Error! Unsupported command")
     }
   }
@@ -43,13 +43,13 @@ class ServerService(programController: ProgramController) {
   private def execute(name: String): TextMessage = {
     println(s"Executing program with name: $name")
     val result = programController.runJarFile(name)
-    TextMessage(s"${Protocol.EXECUTE_RESULT}$result")
+    TextMessage(s"${Protocol.EXECUTE_RESULT}$name:$result")
   }
 
-  private def report(): TextMessage = {
-    println("Creating diff report")
+  private def report(name: String): TextMessage = {
+    println(s"Creating diff report for program: $name")
     val result = programController.makeDiffFromLatestFiles()
-    TextMessage(s"${Protocol.REPORT_RESULT}$result")
+    TextMessage(s"${Protocol.REPORT_RESULT}$name:$result")
   }
 
 }
