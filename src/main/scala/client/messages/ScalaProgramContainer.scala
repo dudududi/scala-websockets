@@ -7,7 +7,7 @@ object ScalaProgramContainer {
 
   def programOne(): (String, String) = {
     ("programOne",
-      """object one {
+      """object programOne {
           def main(args: Array[String]) {
             val okResponseCode = 100
             println(okResponseCode)

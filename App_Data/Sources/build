@@ -22,6 +22,11 @@ cd ..
 
 scala $1.jar
 
-now=$(date +"%s%N")
+
 mkdir -p ../../history/$1
+
+if [ ! "$(ls -A ../../history/$1)" ] ; then
+    touch ../../history/$1/$(date +"%s%N")
+fi
+now=$(date +"%s%N")
 cp ./src/$1.scala ../../history/$1/$now
