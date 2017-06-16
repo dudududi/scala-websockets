@@ -55,7 +55,7 @@ class ProgramControllerSpec extends FlatSpec with BeforeAndAfter{
   }
 
   "Prepare difference raport" should "return '' if programName not exist or no differences" in {
-    val result = programController.makeDiffFromLatestFiles()
+    val result = programController.makeDiffFromLatestFiles("abc")
     assert(result.equals(""))
   }
 }

@@ -48,7 +48,7 @@ class ServerService(programController: ProgramController) {
 
   private def report(name: String): TextMessage = {
     println(s"Creating diff report for program: $name")
-    val result = programController.makeDiffFromLatestFiles()
+    val result = programController.makeDiffFromLatestFiles(name)
     TextMessage(s"${Protocol.REPORT_RESULT}$name:$result")
   }
 
