@@ -36,13 +36,25 @@ class ServerService(programController: ProgramController) {
     println(s"Compiling received program, name: $name")
 
     programController.setOutputJarName(name)
-    val result = programController.prepareSharedProgram(code)
+    var result = false
+    try {
+      result = programController.prepareSharedProgram(code)
+    } catch {
+      case e: Exception => result = false
+    }
+
     TextMessage(if (result) s"${Protocol.COMPILE_RESULT_SUCCESS}$name" else Protocol.COMPILE_RESULT_FAIL)
   }
 
   private def execute(name: String): TextMessage = {
     println(s"Executing program with name: $name")
-    val result = programController.runJarFile(name)
+    var result = ""
+    try {
+      result = programController.runJarFile(name)
+    } catch {
+      case e: Exception => result = "Running error!"
+    }
+
     TextMessage(s"${Protocol.EXECUTE_RESULT}$name:$result")
   }
 
