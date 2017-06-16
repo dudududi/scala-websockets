@@ -29,19 +29,21 @@ class ClientService(url: String, handler: ResultHandler) extends WebSocketClient
           handler.onCompile(false)
 
         case s if s.startsWith(Protocol.EXECUTE_RESULT) =>
-          handler.onExecute(s.stripPrefix(Protocol.EXECUTE_RESULT))
-          sendReportRequest()
+          val (name, result) = decodeMessage(s.stripPrefix(Protocol.EXECUTE_RESULT))
+          handler.onExecute(result)
+          sendReportRequest(name)
 
         case s if s.startsWith(Protocol.REPORT_RESULT) =>
-          handler.onReport(s.stripPrefix(Protocol.REPORT_RESULT))
+          val (name, result) = decodeMessage(s.stripPrefix(Protocol.REPORT_RESULT))
+          handler.onReport(result)
 
         case _ => println("Unsupported response:  " + message)
       }
   }
 
-  def sendRequest(code: String): Unit = {
+  def sendRequest(name: String, code: String): Unit = {
     println("Send compile request to server...")
-    send(s"${Protocol.COMPILE_REQUEST}$code")
+    send(s"${Protocol.COMPILE_REQUEST}$name:$code")
   }
 
   private def sendExecuteRequest(programName: String): Unit = {
@@ -49,9 +51,15 @@ class ClientService(url: String, handler: ResultHandler) extends WebSocketClient
     send(s"${Protocol.EXECUTE_REQUEST}$programName")
   }
 
-  private def sendReportRequest(): Unit ={
+  private def sendReportRequest(programName: String): Unit ={
     println("Fetch diff report...")
-    send(Protocol.REPORT_REQUEST)
+    send(s"${Protocol.REPORT_REQUEST}$programName")
+  }
+
+  private def decodeMessage(msg: String): (String, String) = {
+    val name = msg.split(":").head
+    val param = msg.stripPrefix(s"$name:")
+    (name, param)
   }
 
 }
