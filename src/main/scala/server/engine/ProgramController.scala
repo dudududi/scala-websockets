@@ -54,7 +54,7 @@ class ProgramController {
   }
 
   def makeDiffFromLatestFiles(): String ={
-    val consoleResult = Process(Seq("bash", "-c", "cd ./App_Data/ && bash ./prepare_difference_report")).!!
+    val consoleResult = Process(Seq("bash", "-c", "cd ./App_Data/ && bash ./prepare_difference_report " + programOutputName)).!!
 
     println(s"Report: $consoleResult")
     consoleResult

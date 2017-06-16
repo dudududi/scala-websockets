@@ -11,13 +11,13 @@ class ProgramControllerSpec extends FlatSpec with BeforeAndAfter{
   }
 
   "Setting shared program name" should "return set program name" in {
-    val programName = "test"
+    val programName = "program"
     val result = programController.setOutputJarName(programName)
     assert(result == programName)
   }
 
   "Prepared shared program" should "return true if shared program directory was crated properly" in {
-    val sourceCode = "object test { \n" +
+    val sourceCode = "object program { \n" +
       "def main(args: Array[String]) { \n" +
       "val okResponseCode = 100 \n" +
       "println(okResponseCode) \n" +
@@ -29,12 +29,12 @@ class ProgramControllerSpec extends FlatSpec with BeforeAndAfter{
   }
 
   "Run jar file" should "return program output if program running properly" in {
-    val jarFileName = "test"
+    val jarFileName = "program"
     val knownResult = "100"
 
     val result = programController.runJarFile(jarFileName)
     assert(result.equals(knownResult))
-    "rm -rf ./App_Data/Programs/test".!
+    "rm -rf ./App_Data/Programs/program".!
   }
 
   "Saving downloaded source code" should "return false if sourceCode string is empty or equals 'unknown_command'" in {
