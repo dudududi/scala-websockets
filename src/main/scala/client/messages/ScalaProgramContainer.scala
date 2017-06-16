@@ -5,24 +5,37 @@ package client.messages
   */
 object ScalaProgramContainer {
 
-  val programOne = "programOne" -> ("object one { \n" +
-    "def main(args: Array[String]) { \n" +
-    "val okResponseCode = 100 \n" +
-    "println(okResponseCode) \n" +
-    "} \n" +
-    "}")
+  def programOne(): (String, String) = {
+    ("programOne",
+      """object one {
+          def main(args: Array[String]) {
+            val okResponseCode = 100
+            println(okResponseCode)
+          }
+      }""".stripMargin)
+  }
 
-  val helloWord = "helloWorld" -> ("object helloWorld {\n" +
-    "def main(args: Array[String]) {\n" +
-    "println(\"Hello, world!\")\n" +
-    "}\n" +
-    "}")
+  def helloWord(): (String, String) = {
+    ("helloWorld",
+      """
+         object helloWorld {
+          def main(args: Array[String]) {
+            println("Hello, world!")
+          }
+         }
+      """)
+  }
 
-  val sum = "sum" -> ("object sum {\n" +
-    "def main(args: Array[String]) {\n" +
-    "val a = 5\n" +
-    "val b = 6\n" +
-    "println(a+b)\n" +
-    "}\n" +
-    "}")
+  def sum(): (String, String) = {
+    ("sum",
+      """
+         object sum {
+          def main(args: Array[String]) {
+            val a = 5
+            val b = 6
+            println(a+b)
+          }
+         }
+      """)
+  }
 }
