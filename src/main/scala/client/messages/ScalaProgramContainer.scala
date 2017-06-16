@@ -17,25 +17,21 @@ object ScalaProgramContainer {
 
   def helloWord(): (String, String) = {
     ("helloWorld",
-      """
-         object helloWorld {
+      """object helloWorld {
           def main(args: Array[String]) {
             println("Hello, world!")
           }
-         }
-      """)
+         }""")
   }
 
   def sum(): (String, String) = {
     ("sum",
-      """
-         object sum {
+      """object sum {
           def main(args: Array[String]) {
             val a = 5
             val b = 6
             println(a+b)
           }
-         }
-      """)
+         }""")
   }
 }
